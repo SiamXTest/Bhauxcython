@@ -1,8 +1,13 @@
-import ctypes
+import BhauTheUltimateTools
 
-# সঠিক ফাইল নাম দাও এখানে
-lib = ctypes.CDLL("./BhauTheUltimateTools-312.so")
+# ফাংশন তালিকা দেখা
+print("Available functions/objects in BhauTheUltimateTools:")
+print(dir(BhauTheUltimateTools))
 
-# যদি কোনো ফাংশন থাকে (যেমন say_hello), তাহলে কল করতে পারো
-# উদাহরণ:
-# lib.say_hello()
+# যদি main() থাকে
+if hasattr(BhauTheUltimateTools, "main"):
+    BhauTheUltimateTools.main()
+
+# অথবা যদি start() থাকে
+elif hasattr(BhauTheUltimateTools, "start"):
+    BhauTheUltimateTools.start()
