@@ -1,22 +1,17 @@
-#!/data/data/com.termux/files/usr/bin/python3.12
-# -*- coding: utf-8 -*-
-import os
-import subprocess
+import importlib.util
+import pathlib
+import sys
 
-bit = os.uname().machine
-changes = subprocess.getoutput("git status --porcelain")
+# .so ফাইল একই ডিরেক্টরিতে থাকতে হবে
+so_path = pathlib.Path(__file__).with_name("BhauTheUltimateTools-312.so")
 
-# ✅ Git পরিবর্তন থাকলে ক্লিন + pull
-if changes:
-    os.system("git reset --hard")
-    os.system("git clean -fd")
-    os.system("git pull")
+# এখানে "bhau" হল একটু টেম্পরারি নাম; যদি PyInit_<name> আলাদা হয়, পরে ঠিক করে নিবে
+spec = importlib.util.spec_from_file_location("bhau", so_path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
 
-os.system("chmod 777 *")
-
-# ✅ .so ফাইল ইমপোর্ট করা (শুধু 64-bit এ)
-if '64' in bit:
-    import BhauTheUltimateTools  # ← .so ফাইলের নাম (cpython-312 বাদ দিয়ে)
-else:
-    os.system("clear")
-    print("❌ TOOL NOT AVAILABLE FOR 32-BIT DEVICE")
+print("Imported module:", module)
+print("Available attributes/functions:")
+for name in sorted(dir(module)):
+    if not name.startswith("__"):
+        print(" ", name)
